@@ -20,9 +20,9 @@ id:: 6ae1de1b-caa6-409f-a07f-44a5212c5e3d
       | Human Readable | Excellent | Moderate | No | No |
       | Schema Requirement | Optional | Optional (JSON Schema) | Required (JSON format) | Required (`.proto` file) |
       | Data Size on Wire | Large | Medium-Large | Very Small | Smallest |
-      | Speed (Parse/Serialize) | Slow | Moderate | Flat | Fastest |
+      | Speed (Parse, Serialize) | Slow | Moderate | Flat | Fastest |
       | Schema Evolution | Manual | Manual | Automatic (Writer, Reader) | Tag-based (Backward, Forward) |
-      | Primary Use Case | App Configuration | Web APIs / App Data | Big Data (Kafka / Hadoop) | Microservices (gRPC) |
+      | Primary Use Case | App Configuration | Web APIs, App Data | Big Data (Kafka, Hadoop) | Microservices (gRPC) |
   - ## Format Profiles
     - The Text Formats (Human-Centric)
       - | Format Profile | YAML | JSON |
