@@ -91,9 +91,9 @@ id:: 6ae1de1b-caa6-409f-a07f-44a5212c5e3d
     - Mapping Scalars to Scalars
       - Mappings use a colon and space (“: ”) to mark each key: value pair.
         - ```
-          hr:  65    # Home runs
-          avg: 0.278 # Batting average
-          rbi: 147   # Runs Batted In
+          hr:  65        # Home runs
+          avg: 0.278     # Batting average
+          rbi: 147       # Runs Batted In
           ```
     - Mapping Scalars to Sequences
       - Use indentation for scope of the value of a mapping
@@ -118,6 +118,17 @@ id:: 6ae1de1b-caa6-409f-a07f-44a5212c5e3d
             name: Sammy Sosa
             hr:   63
             avg:  0.288
+          ```
+      - Within a block collection, key: value pairs can start immediately following the dash, colon, or question mark.
+        - ```
+          ---
+          # Products purchased
+          - item    : Super Hoop
+            quantity: 1
+          - item    : Basketball
+            quantity: 4
+          - item    : Big Shoes
+            quantity: 1
           ```
   - ## Flow-style Collections
     - YAML also has flow styles, using explicit indicators rather than indentation to denote scope.
@@ -188,7 +199,7 @@ id:: 6ae1de1b-caa6-409f-a07f-44a5212c5e3d
             - *SS              # Subsequent occurrence
             - Ken Griffey
           ```
-    - A question mark and space (“? ”) indicate a complex mapping key. Within a block collection, key: value pairs can start immediately following the dash, colon, or question mark.
+    - A question mark and space (“? ”) indicate a complex mapping key.
       - Mapping between Sequences
         - ```
           ? - Detroit Tigers
@@ -200,47 +211,6 @@ id:: 6ae1de1b-caa6-409f-a07f-44a5212c5e3d
               Atlanta Braves ]
           : [ 2001-07-02, 2001-08-12,
               2001-08-14 ]
-          ```
-        - By JSON
-        - ```
-          {
-            "Detroit Tigers,Chicago cubs": [
-              "2001-07-23T00:00:00.000Z"
-            ],
-            "New York Yankees,Atlanta Braves": [
-              "2001-07-02T00:00:00.000Z",
-              "2001-08-12T00:00:00.000Z",
-              "2001-08-14T00:00:00.000Z"
-            ]
-          }
-          ```
-      - Compact Nested Mapping
-        - ```
-          ---
-          # Products purchased
-          - item    : Super Hoop
-            quantity: 1
-          - item    : Basketball
-            quantity: 4
-          - item    : Big Shoes
-            quantity: 1
-          ```
-        - By JSON
-        - ```
-          [
-            {
-              "item": "Super Hoop",
-              "quantity": 1
-            },
-            {
-              "item": "Basketball",
-              "quantity": 4
-            },
-            {
-              "item": "Big Shoes",
-              "quantity": 1
-            }
-          ]
           ```
   - ## Scalars
     - Scalar content can be written in block notation, using a literal style (indicated by “|”) where all line breaks are significant.
@@ -383,7 +353,7 @@ id:: 6ae1de1b-caa6-409f-a07f-44a5212c5e3d
          above may be different for
          different documents.
         ```
-  - ## Full Length Example
+  - ## Full Length Examples
     - Invoice
       - ```
         --- !<tag:clarkevans.com,2002:invoice>
@@ -463,13 +433,317 @@ id:: 6ae1de1b-caa6-409f-a07f-44a5212c5e3d
       
       member
           ws string ws ':' element
-      
-      elements
-          element ',' elements
-      
-      element
-          ws value ws
       ```
     - An object is an unordered set of name/value pairs.
     - An object begins with "{" (left brace) and ends with "}" (right brace).
     - Each name is followed by ":" (colon) and the name/value pairs are separated by "," (comma).
+  - ## Arrays
+    - ```
+      array
+          '[' ws ']'
+          '[' elements ']'
+      
+      elements
+          element
+          element ',' elements
+      ```
+    - An array is an ordered collection of values.
+    - An array begins with "]" (left bracket) and ends with "]" (right bracket).
+    - Values are separated by "," (comma).
+  - ## Elements, Values and White Spaces
+    - ```
+      json
+          element
+      
+      element
+          ws value ws
+      
+      value
+          object
+          array
+          string
+          number
+          "true"
+          "false"
+          "null"
+      
+      ws
+          ""
+          '0020' ws       # space
+          '000A' ws       # linefeed
+          '000D' ws       # carriage return
+          '0009' ws       # hirozontal tab
+      ```
+    - A whitespace, denoted as `ws` in this grammar, is a space (`0020`), a linefeed (`000A`), a carriage return (`000D`), or a horizontal tab (`0009`).
+  - ## Strings
+    - ```
+      string
+          '"' characters '"'
+      
+      characters
+          ""
+          character characters
+      
+      character
+          '0020' . '10FFFF' - '"' - '\'
+          '\' escape
+      
+      escape
+          '"'         # quotation mark
+          '\'         # reverse solidus
+          '/'         # solidus
+          'b'         # back space
+          'f'         # form feed
+          'n'         # linefeed
+          'r'         # carriage return
+          't'         # horizontal tab
+          'u' hex hex hex hex
+      
+      hex
+          digit
+          'A' . 'F'
+          'a' . 'f'
+      ```
+  - ## Numbers
+    - ```
+      number
+          integer fraction exponent
+      
+      integer
+          digit
+          onenine digits
+          '-' digit
+          '-' onenine digits
+      
+      digits
+          digit
+          digit digits
+      
+      digit
+          '0'
+          onenine
+      
+      onenine
+          '1' . '9'
+      
+      fraction
+          ""
+          '.' digits
+      
+      exponent
+          ""
+          'E' sign digits
+          'e' sign digits
+      
+      sign
+          ""
+          '+'
+          '-'
+      ```
+  - ## Comparison to YAML
+    - Sequence of Scalars
+      - In YAML
+        - ```
+          - Mark McGwire
+          - Sammy Sosa
+          - Ken Griffey
+          ```
+      - In JSON
+        - ```
+          [
+            "Mark McGwire",
+            "Sammy Sosa",
+            "Ken Griffey"
+          ]
+          ```
+    - Mapping Scalars to Scalars
+      - In YAML
+        - ```
+          hr:  65        # Home runs
+          avg: 0.278     # Batting average
+          rbi: 147       # Runs Batted In
+          ```
+      - In JSON
+        - ```
+          {
+            "hr": 65,
+            "avg": 0.278,
+            "rbi": 147
+          }
+          ```
+    - Mapping Scalars to Sequences
+      - In YAML
+        - ```
+          american:
+            - Boston Red Sox
+            - Detroit Tigers
+            - New York Yankees
+          national:
+            - New York Mets
+            - Chicago Cubs
+            - Atlanta Braves
+          ```
+      - In JSON
+        - ```
+          {
+            "american": [
+              "Boston Red Sox",
+              "Detroit Tigers",
+              "New York Yankees"
+            ],
+            "national": [
+              "New York Mets",
+              "Chicago Cubs",
+              "Atlanta Braves"
+            ]
+          }
+          ```
+    - Sequence of Mappings
+      - In YAML
+        - ```
+          -
+            name: Mark McGwire
+            hr:   65
+            avg:  0.278
+          -
+            name: Sammy Sosa
+            hr:   63
+            avg:  0.288
+          ```
+      - In JSON
+        - ```
+          [
+            {
+              "name": "Mark McGwire",
+              "hr": 65,
+              "avg": 0.278
+            },
+            {
+              "name": "Sammy Sosa",
+              "hr": 63,
+              "avg": 0.288
+            }
+          ]
+          ```
+    - Mapping between Sequences
+      - In YAML
+        - ```
+          ? - Detroit Tigers
+            - Chicago cubs
+          :
+            - 2001-07-23
+          
+          ? [ New York Yankees,
+              Atlanta Braves ]
+          : [ 2001-07-02, 2001-08-12,
+              2001-08-14 ]
+          ```
+      - In JSON
+        - ```
+          {
+            "Detroit Tigers,Chicago cubs": [
+              "2001-07-23T00:00:00.000Z"
+            ],
+            "New York Yankees,Atlanta Braves": [
+              "2001-07-02T00:00:00.000Z",
+              "2001-08-12T00:00:00.000Z",
+              "2001-08-14T00:00:00.000Z"
+            ]
+          }
+          ```
+      - Caviet
+        - > Keys in YAML can be a sequence, but keys in JSON must be a string.
+    - Compact Nested Mapping
+      - In YAML
+        - ```
+          ---
+          # Products purchased
+          - item    : Super Hoop
+            quantity: 1
+          - item    : Basketball
+            quantity: 4
+          - item    : Big Shoes
+            quantity: 1
+          ```
+      - In JSON
+        - ```
+          [
+            {
+              "item": "Super Hoop",
+              "quantity": 1
+            },
+            {
+              "item": "Basketball",
+              "quantity": 4
+            },
+            {
+              "item": "Big Shoes",
+              "quantity": 1
+            }
+          ]
+          ```
+  - ## Full Length Examples
+    - Invoice
+      - ```
+        {
+          "invoice": 34843,
+          "date": "2001-01-23T00:00:00.000Z",
+          "bill-to": {
+            "given": "Chris",
+            "family": "Dumars",
+            "address": {
+              "lines": "458 Walkman Dr.\nSuite #292\n",
+              "city": "Royal Oak",
+              "state": "MI",
+              "postal": 48046
+            }
+          },
+          "ship-to": {
+            "given": "Chris",
+            "family": "Dumars",
+            "address": {
+              "lines": "458 Walkman Dr.\nSuite #292\n",
+              "city": "Royal Oak",
+              "state": "MI",
+              "postal": 48046
+            }
+          },
+          "product": [
+            {
+              "sku": "BL394D",
+              "quantity": 4,
+              "description": "Basketball",
+              "price": 450
+            },
+            {
+              "sku": "BL4438H",
+              "quantity": 1,
+              "description": "Super Hoop",
+              "price": 2392
+            }
+          ],
+          "tax": 251.42,
+          "total": 4443.52,
+          "comments": "Late afternoon is best. Backup contact is Nancy Billsmer @ 338-4338."
+        }
+        ```
+    - Log File
+      - ```
+        {
+          "Date": "2001-11-23T20:03:17.000Z",
+          "User": "ed",
+          "Fatal": "Unknown variable \"bar\"",
+          "Stack": [
+            {
+              "file": "TopClass.py",
+              "line": 23,
+              "code": "x = MoreObject(\"345\\n\")\n"
+            },
+            {
+              "file": "MoreClass.py",
+              "line": 58,
+              "code": "foo = bar"
+            }
+          ]
+        }
+        ```
