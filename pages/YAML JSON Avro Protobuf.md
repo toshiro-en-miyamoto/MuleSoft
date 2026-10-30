@@ -15,7 +15,7 @@ id:: 6ae1de1b-caa6-409f-a07f-44a5212c5e3d
       | Protobuf | Protocol Buffers |
   - ## Comparison
     - | Feature | YAML | JSON | Avro | Protobuf |
-      | ---- | ---- | ---- | ---- |
+      | ---- | ---- | ---- | ---- | ----|
       | Type | Text | Text | Binary | Binary |
       | Human Readable | Excellent | Moderate | No | No |
       | Schema Requirement | Optional | Optional (JSON Schema) | Required (JSON format) | Required (`.proto` file) |
