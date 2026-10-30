@@ -212,6 +212,19 @@ id:: 6ae1de1b-caa6-409f-a07f-44a5212c5e3d
           : [ 2001-07-02, 2001-08-12,
               2001-08-14 ]
           ```
+        - In JSON
+        - ```
+          {
+            "Detroit Tigers,Chicago cubs": [
+              "2001-07-23T00:00:00.000Z"
+            ],
+            "New York Yankees,Atlanta Braves": [
+              "2001-07-02T00:00:00.000Z",
+              "2001-08-12T00:00:00.000Z",
+              "2001-08-14T00:00:00.000Z"
+            ]
+          }
+          ```
   - ## Scalars
     - Scalar content can be written in block notation, using a literal style (indicated by “|”) where all line breaks are significant.
       - In literals, newlines are preserved
